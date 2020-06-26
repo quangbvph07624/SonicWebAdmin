@@ -1,6 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
-
+import { Route, Redirect, Switch } from "react-router-dom";
 import Product from "../pages/product";
 import Login from "../pages/login";
 import Phone from "../pages/phone";
@@ -9,6 +8,7 @@ import Gear from "../pages/gear";
 import BillManage from "../pages/BillManage";
 import Statistics from "../pages/Statistics";
 import AddProduct from "../pages/AddProduct";
+import history from "../services/history";
 const PageLoading = () => (
   <div
     style={{
@@ -33,7 +33,7 @@ const ProtectedRoute = ({
   isLogin,
   ...rest
 }) => {
-  console.log("component", Component);
+  console.log("component", isLogin);
   if (!isLogin) return <Redirect to={"/login"} />;
   if (children) {
     return (
@@ -44,19 +44,13 @@ const ProtectedRoute = ({
   }
 
   return (
-    <Route
-      path={path}
-      {...rest}
-      render={(props) => {
-        return <Component {...props} />;
-      }}
-    />
+    <Route path={path} {...rest} render={(props) => <Component {...props} />} />
   );
 };
 
 export default function renderRoutes(isLogin) {
   return (
-    <Switch>
+    <Switch history={history}>
       <Route exact path="/login" component={Login}></Route>
       <ProtectedRoute
         exact

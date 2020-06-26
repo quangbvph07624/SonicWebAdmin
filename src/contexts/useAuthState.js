@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
 
 const useAuthState = () => {
-  const initialState = {};
+  // const initialState = {};
 
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState();
 
   const actions = useMemo(() => getActions(setState), [setState]);
 

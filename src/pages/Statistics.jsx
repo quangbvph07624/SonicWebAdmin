@@ -12,11 +12,10 @@ import { Card } from "antd";
 import * as ApiClient from "../helpers/ApiClient";
 import moment from "moment";
 import { Typography } from "antd";
-
 const { Title } = Typography;
 const Statistics = () => {
   const [data, setData] = useState();
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("_token");
   const fetchData = async () => {
     const _data = await ApiClient.ApiGet("statistics", token);
     console.log("_data", _data);
@@ -30,12 +29,12 @@ const Statistics = () => {
 
   useEffect(() => {
     fetchData();
-  }, ...[]);
+  }, []);
   return (
     <div align="center">
       <Title>Thống kê doanh thu</Title>
       <Card
-        style={{ width: window.screen.width - 200 }}
+        style={{ width: window.screen.width - 300 }}
         title="Thống kê doanh thu theo từng ngày"
       >
         <LineChart

@@ -11,6 +11,7 @@ import {
   AuditOutlined,
   LineChartOutlined,
   LogoutOutlined,
+  ShoppingOutlined,
 } from "@ant-design/icons";
 import history from "../services/history";
 const { Sider } = Layout;
@@ -31,7 +32,7 @@ const Sidebar = () => {
       <div className="logo" />
       <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
         <SubMenu key="1" icon={<AppstoreOutlined />} title="Sản phẩm">
-          <Menu.Item key="/home" icon={<MobileOutlined />}>
+          <Menu.Item key="/home" icon={<ShoppingOutlined />}>
             <Link to="/home">Tất cả sản phẩm</Link>
           </Menu.Item>
           <Menu.Item key="/phone" icon={<MobileOutlined />}>
@@ -58,7 +59,7 @@ const Sidebar = () => {
           <a
             href="/login"
             onClick={() => {
-              localStorage.removeItem("_token");
+              localStorage.clear();
               history.push("/login");
             }}
           >

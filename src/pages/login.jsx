@@ -1,48 +1,35 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Button, message } from "antd";
 import * as ApiClient from "../helpers/ApiClient";
 import history from "../services/history";
-import { AuthContext } from "../contexts";
 import Styled from "./loginStyled";
 
-// const layout = {
-//   labelCol: {
-//     span: 8,
-//   },
-//   wrapperCol: {
-//     span: 16,
-//   },
-// };
-// const tailLayout = {
-//   wrapperCol: {
-//     offset: 8,
-//     span: 16,
-//   },
-// };
 const Login = () => {
-  const { state, actions } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({});
-  if (localStorage.getItem("_token")) {
-    history.push("/");
-  }
+
   const handleLogin = async () => {
     setLoading(true);
     await ApiClient.ApiPost("user/login", user)
       .then((res) => {
         console.log("resss", res);
         message.success("Đăng nhập thành công!");
+        setLoading(false);
         localStorage.setItem("_token", res.data.idToken);
         localStorage.setItem("_expiresAt", res.data.expiresAt);
         localStorage.setItem("_refreshToken", res.data.refreshToken);
-        actions.setToken(res.data.idToken);
         history.push("/");
       })
       .catch((err) => {
-        message.error("Sai tài khoản mật khẩu!");
+        alert("Sai tài khoản mật khẩu!");
+        setLoading(false);
       });
   };
-
+  useEffect(() => {
+    if (localStorage.getItem("_token")) {
+      history.push("/");
+    }
+  });
   return (
     <Styled.Container>
       <div className="container">
@@ -75,7 +62,6 @@ const Login = () => {
           </Form.Item>
           <Form.Item>
             <Button
-              // style={{ alignSelf: "center" }}
               loading={loading}
               type="primary"
               onClick={handleLogin}
