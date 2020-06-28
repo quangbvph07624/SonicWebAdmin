@@ -10,7 +10,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     setLoading(true);
-    await ApiClient.ApiPost("user/admin/login", user)
+    await ApiClient.ApiPost("user/login", user)
       .then((res) => {
         console.log("resss", res);
         message.success("Đăng nhập thành công!");
