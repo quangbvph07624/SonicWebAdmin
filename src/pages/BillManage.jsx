@@ -5,7 +5,6 @@ const BillManage = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("_token");
-  const [confirming, setConfirming] = useState(false);
   const fetchData = async () => {
     setLoading(true);
     await ApiClient.ApiGet("admin/bills", token).then((res) => {
@@ -75,12 +74,10 @@ const BillManage = () => {
             <Popconfirm
               title="Xác nhận đơn hàng!"
               onConfirm={async () => {
-                setConfirming(true);
                 await ApiClient.ApiPut(`bill-status/${record._id}`, token)
                   .then((res) => {
                     message.success("đã xác nhận đơn hàng");
                     fetchData();
-                    setConfirming(false);
                   })
                   .catch((err) => {
                     console.log("err", err);
@@ -89,7 +86,7 @@ const BillManage = () => {
               okText="Yes"
               cancelText="No"
             >
-              <Button loading={confirming} type="primary">
+              <Button key="_id" type="primary">
                 Xác nhận
               </Button>
             </Popconfirm>
