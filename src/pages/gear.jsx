@@ -92,7 +92,7 @@ const Gear = () => {
           return (
             <List.Item>
               <Card title="Tên sản phẩm">{item.name}</Card>
-              <Card title="Giá">{item.price}</Card>
+              <Card title="Giá">{item.price} VND</Card>
               <Card title="Giới thiệu">
                 {" "}
                 <ReadMoreAndLess
@@ -239,6 +239,7 @@ const Gear = () => {
                                 setVisible(false);
                                 setData(data);
                                 message.success("Sửa thành công!");
+                                fetchData();
                               })
                               .catch((err) => {
                                 message.error("Có lỗi xảy ra!");

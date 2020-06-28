@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Space, Spin, Popconfirm, message } from "antd";
 import * as ApiClient from "../helpers/ApiClient";
-import history from "../services/history";
 const BillManage = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
@@ -69,7 +68,7 @@ const BillManage = () => {
     { title: "Ngày đặt hàng", dataIndex: "createdAt", key: "createdAt" },
     {
       title: "Trạng thái",
-      key: "operation",
+      key: "_id",
       render: (record) => {
         if (record.status === "Processing") {
           return (
@@ -80,9 +79,8 @@ const BillManage = () => {
                 await ApiClient.ApiPut(`bill-status/${record._id}`, token)
                   .then((res) => {
                     message.success("đã xác nhận đơn hàng");
+                    fetchData();
                     setConfirming(false);
-                    setData(...[]);
-                    history.push("/bill");
                   })
                   .catch((err) => {
                     console.log("err", err);
@@ -92,13 +90,13 @@ const BillManage = () => {
               cancelText="No"
             >
               <Button loading={confirming} type="primary">
-                Processing
+                Xác nhận
               </Button>
             </Popconfirm>
           );
         }
         if (record.status === "Successful") {
-          return <Button disabled={true}>Successful</Button>;
+          return <Button disabled={true}>Đã xác nhận</Button>;
         }
       },
     },
@@ -118,6 +116,7 @@ const BillManage = () => {
         <b style={{ fontSize: 36 }}>Quản lí hóa đơn</b>
       </div>
       <Table
+        manual={true}
         margin={20}
         rowKey="_id"
         className="components-table-demo-nested"

@@ -34,7 +34,7 @@ const Product = () => {
   const [visible, setVisible] = useState(false);
   const [product, setProduct] = useState({});
   const [search, setSearch] = useState("");
-
+  const [loadingbtn, setLoadingbtn] = useState(false);
   const fetchData = async () => {
     await ApiClient.ApiGet("products", token)
       .then((res) => {
@@ -95,7 +95,7 @@ const Product = () => {
           return (
             <List.Item>
               <Card title="Tên sản phẩm">{item.name}</Card>
-              <Card title="Giá">{item.price}</Card>
+              <Card title="Giá">{item.price} VND</Card>
               <Card title="Giới thiệu">
                 {" "}
                 <ReadMoreAndLess
@@ -133,16 +133,20 @@ const Product = () => {
                   okText="Yes"
                   cancelText="No"
                   onConfirm={async () => {
+                    setLoadingbtn(true);
                     await ApiClient.ApiDel(`products/${item._id}`).then(
                       (res) => {
-                        searchFilter.splice(index, 1);
-                        setData(searchFilter);
                         message.success("Xóa thành công!");
+                        fetchData();
                       }
                     );
                   }}
                 >
-                  <Button danger style={{ margin: 10, width: 260 }}>
+                  <Button
+                    loading={loadingbtn}
+                    danger
+                    style={{ margin: 10, width: 260 }}
+                  >
                     Xoá sản phẩm
                   </Button>
                 </Popconfirm>
@@ -256,6 +260,7 @@ const Product = () => {
                   <Form.Item wrapperCol={{ span: 10, offset: 10 }}>
                     <div>
                       <Button
+                        style={{ margin: 20 }}
                         onClick={async () => {
                           await ApiClient.ApiPut(
                             `products/${item._id}`,
@@ -264,8 +269,8 @@ const Product = () => {
                           )
                             .then((res) => {
                               setVisible(false);
-                              setData(data);
                               message.success("Sửa thành công!");
+                              fetchData();
                             })
                             .catch((err) => {
                               message.error("Có lỗi xảy ra!");
@@ -277,6 +282,7 @@ const Product = () => {
                         Xác nhận
                       </Button>
                       <Button
+                        style={{ margin: 20 }}
                         danger
                         onClick={() => {
                           setVisible(false);
