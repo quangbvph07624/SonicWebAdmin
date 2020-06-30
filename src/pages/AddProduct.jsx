@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Input, Button, message, Radio } from "antd";
 import * as ApiClient from "../helpers/ApiClient";
 import history from "../services/history";
+import { AuthContext } from "../contexts";
 const { TextArea } = Input;
 const layout = {
   labelCol: {
@@ -14,7 +15,8 @@ const layout = {
 
 const AddProduct = () => {
   const [product, setProduct] = useState({});
-  const token = localStorage.getItem("_token");
+  const state = useContext(AuthContext);
+  let token = state.state.token;
   const [loading, setLoading] = useState(false);
   return (
     <div style={{ padding: 50, backgroundColor: "#fff" }} className="container">

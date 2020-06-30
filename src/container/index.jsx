@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Layout } from "antd";
 import renderRoutes from "../routes";
 import Sidebar from "../layout/Sidebar";
 import Headerbar from "../layout/Headerbar";
 import { withRouter } from "react-router-dom";
-// import { AuthContext } from "../contexts";
+import { AuthContext } from "../contexts";
 const { Content, Footer } = Layout;
 
 const App = () => {
-  let isLogin = true;
-  // const { state } = useContext(AuthContext);
-  const token = localStorage.getItem("_token");
-  if (token) {
+  let isLogin = null;
+  const state = useContext(AuthContext);
+  console.log("token state", state);
+  // const token = localStorage.getItem("_token");
+  if (state.state) {
     isLogin = true;
   } else {
     isLogin = false;

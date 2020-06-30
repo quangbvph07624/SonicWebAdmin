@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./App.less";
 import {
   List,
@@ -12,6 +12,7 @@ import {
   Spin,
   Popconfirm,
 } from "antd";
+import { AuthContext } from "../contexts";
 import { Input } from "antd";
 import { Link } from "react-router-dom";
 import * as ApiClient from "../helpers/ApiClient";
@@ -28,7 +29,8 @@ const layout = {
   },
 };
 const Product = () => {
-  const token = localStorage.getItem("_token");
+  const state = useContext(AuthContext);
+  let token = state.state.token;
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);

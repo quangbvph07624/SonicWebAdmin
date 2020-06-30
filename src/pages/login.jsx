@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Form, Input, Button, message } from "antd";
 import * as ApiClient from "../helpers/ApiClient";
 import history from "../services/history";
 import Styled from "./loginStyled";
-
+import { AuthContext } from "../contexts";
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({});
-
+  const { state, actions } = useContext(AuthContext);
   const handleLogin = async () => {
     setLoading(true);
     await ApiClient.ApiPost("user/login", user)
@@ -18,6 +18,8 @@ const Login = () => {
         localStorage.setItem("_token", res.data.idToken);
         localStorage.setItem("_expiresAt", res.data.expiresAt);
         localStorage.setItem("_refreshToken", res.data.refreshToken);
+        actions.setToken(res.data.idToken);
+        console.log("token", res.data.idToken);
         history.push("/");
       })
       .catch((err) => {

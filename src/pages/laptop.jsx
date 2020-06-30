@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./App.less";
 import {
   List,
@@ -12,6 +12,7 @@ import {
   Spin,
   Popconfirm,
 } from "antd";
+import { AuthContext } from "../contexts";
 import { Link } from "react-router-dom";
 import { Input } from "antd";
 import * as ApiClient from "../helpers/ApiClient";
@@ -19,6 +20,7 @@ import ReadMoreAndLess from "react-read-more-less";
 import { UpSquareOutlined } from "@ant-design/icons";
 const { Search } = Input;
 const { TextArea } = Input;
+
 const layout = {
   labelCol: {
     span: 6,
@@ -28,7 +30,9 @@ const layout = {
   },
 };
 const Laptop = () => {
-  const token = localStorage.getItem("_token");
+  const state = useContext(AuthContext);
+  let token = state.state.token;
+  console.log("token laptop", token);
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);

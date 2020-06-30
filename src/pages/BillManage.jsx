@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Table, Button, Space, Spin, Popconfirm, message } from "antd";
+import {AuthContext} from "../contexts";
 import * as ApiClient from "../helpers/ApiClient";
 const BillManage = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem("_token");
+  const state = useContext(AuthContext);
+  let token = state.state.token;
   const fetchData = async () => {
     setLoading(true);
     await ApiClient.ApiGet("admin/bills", token).then((res) => {
